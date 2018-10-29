@@ -28,7 +28,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/skulpt/skulpt.git"
+    "url": "git@github.com:Lincoln-xzc/skulpt.git"
   },
   "bugs": {
     "url": "https://github.com/skulpt/skulpt/issues"
