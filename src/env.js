@@ -52,6 +52,10 @@ Sk.configure = function (options) {
     Sk.inputfunTakesPrompt = options["inputfunTakesPrompt"] || false;
     goog.asserts.assert(typeof Sk.inputfunTakesPrompt === "boolean");
 
+    //add turtle_input
+    Sk.turtle_textinput = options["turtle_textinput"] || Sk.turtle_textinput;
+    goog.asserts.assert(typeof Sk.turtle_textinput === "function");
+
     Sk.retainGlobals = options["retainglobals"] || false;
     goog.asserts.assert(typeof Sk.retainGlobals === "boolean");
 
@@ -189,6 +193,209 @@ Sk.python3 = false;
 Sk.inputfun = function (args) {
     return window.prompt(args);
 };
+// Sk add function
+Sk.turtle_textinput = function(title, prompt){
+    return new Promise(function(resolve){
+        var cover = document.createElement("div");
+        cover.id = "cover";
+        cover.style.position = "fixed";
+        cover.style.width = "100%";
+        cover.style.height = "100%";
+        cover.style.top = "0px";
+        cover.style.left = "0px";
+        cover.style.background = "rgba(0,0,0,0.4)";
+        cover.style.display = "flex";
+        cover.style.alignItems = "center";
+        cover.style.justifyContent = "center";
+        cover.style.zIndex = "99";
+        document.body.appendChild(cover);
+        var inputModal = document.createElement("div");
+        inputModal.style.width = "400px";
+        inputModal.style.height = "200px";
+        inputModal.style.border="1px solid #666";
+        inputModal.style.zIndex = "1000";
+        inputModal.style.background="#fff";
+        cover.appendChild(inputModal);
+        var modal_header = document.createElement("div");
+        var titleDom = document.createElement("span");
+        titleDom.innerHTML = title;
+        var closeBtn = document.createElement("button");
+        closeBtn.innerHTML = "X";
+        closeBtn.style.border = "none";
+        closeBtn.style.background = "#cee2ff";
+        modal_header.style.display="flex";
+        modal_header.style.alignItems="center";
+        modal_header.style.justifyContent="space-between";
+        modal_header.style.paddingLeft = "10px";
+        modal_header.style.paddingRight = "10px";
+        modal_header.style.background = "#cee2ff";
+        modal_header.style.lineHeight = "40px";
+        modal_header.appendChild(titleDom);
+        modal_header.appendChild(closeBtn);
+        inputModal.appendChild(modal_header);
+        var modal_body = document.createElement("div");
+        modal_body.style.textAlign="center";
+        modal_body.style.marginBottom="20px";
+        var content = document.createElement("span");
+        content.innerHTML = prompt;
+        content.style.display="block";
+        content.style.marginBottom="10px";
+        content.style.marginTop="10px";
+        modal_body.appendChild(content);
+        var input = document.createElement("input");
+        input.type = "text";
+        input.id="text_input";
+        input.style.width="180px";
+        input.style.height="25px";
+        input.style.border="1px solid #cee2ff";
+        modal_body.appendChild(input);
+        inputModal.appendChild(modal_body);
+        var modal_footer = document.createElement("div");
+        modal_footer.style.textAlign="center";
+        var cancelBtn = document.createElement("button");
+        cancelBtn.type="button";
+        cancelBtn.id = "cancel";
+        cancelBtn.style.border="1px solid #898989";
+        cancelBtn.style.width="60px";
+        cancelBtn.style.height = "30px";
+        cancelBtn.style.fontWeight="bold";
+        cancelBtn.innerHTML = "取消";
+        var primaryBtn = document.createElement("button");
+        primaryBtn.type = "button";
+        primaryBtn.id = "confirm";
+        primaryBtn.innerHTML = "确定";
+        primaryBtn.style.marginLeft="40px";
+        primaryBtn.style.width="60px";
+        primaryBtn.style.height="30px";
+        primaryBtn.style.background="#4d97ff";
+        primaryBtn.style.fontWeight="bold";
+        modal_footer.appendChild(cancelBtn);
+        modal_footer.appendChild(primaryBtn);
+        inputModal.appendChild(modal_footer);
+        cancelBtn.onclick = function(){
+            document.body.removeChild(cover);
+        };
+        closeBtn.onclick = function(){
+            document.body.removeChild(cover);
+        };
+        primaryBtn.onclick = function(){
+            var text_input = input.value;
+            document.body.removeChild(cover);
+            resolve(text_input);
+        };
+    });
+};
+
+Sk.turtle_numinput = function(title, prompt, defaultVal, minval, maxval){
+    return new Promise(function(resolve){
+        var cover = document.createElement("div");
+        cover.id = "cover";
+        cover.style.position = "fixed";
+        cover.style.width = "100%";
+        cover.style.height = "100%";
+        cover.style.top = "0px";
+        cover.style.left = "0px";
+        cover.style.background = "rgba(0,0,0,0.4)";
+        cover.style.display = "flex";
+        cover.style.alignItems = "center";
+        cover.style.justifyContent = "center";
+        cover.style.zIndex = "99";
+        document.body.appendChild(cover);
+        var inputModal = document.createElement("div");
+        inputModal.style.width = "400px";
+        inputModal.style.height = "200px";
+        inputModal.style.border="1px solid #666";
+        inputModal.style.zIndex = "1000";
+        inputModal.style.background="#fff";
+        cover.appendChild(inputModal);
+        var modal_header = document.createElement("div");
+        var titleDom = document.createElement("span");
+        titleDom.innerHTML = title;
+        var closeBtn = document.createElement("button");
+        closeBtn.innerHTML = "X";
+        closeBtn.style.border = "none";
+        closeBtn.style.background = "#cee2ff";
+        modal_header.style.display="flex";
+        modal_header.style.alignItems="center";
+        modal_header.style.justifyContent="space-between";
+        modal_header.style.paddingLeft = "10px";
+        modal_header.style.paddingRight = "10px";
+        modal_header.style.background = "#cee2ff";
+        modal_header.style.lineHeight = "40px";
+        modal_header.appendChild(titleDom);
+        modal_header.appendChild(closeBtn);
+        inputModal.appendChild(modal_header);
+        var modal_body = document.createElement("div");
+        modal_body.style.textAlign="center";
+        modal_body.style.marginBottom="10px";
+        var content = document.createElement("span");
+        content.innerHTML = prompt;
+        content.style.display="block";
+        content.style.marginBottom="10px";
+        content.style.marginTop="10px";
+        modal_body.appendChild(content);
+        var input = document.createElement("input");
+        input.type = "number";
+        input.id="text_input";
+        input.style.width="180px";
+        input.style.height="25px";
+        input.style.border="1px solid #cee2ff";
+        input.value = defaultVal;
+        modal_body.appendChild(input);
+        inputModal.appendChild(modal_body);
+        var modal_footer = document.createElement("div");
+        modal_footer.style.textAlign="center";
+        var cancelBtn = document.createElement("button");
+        cancelBtn.type="button";
+        cancelBtn.id = "cancel";
+        cancelBtn.style.border="1px solid #898989";
+        cancelBtn.style.width="60px";
+        cancelBtn.style.height = "30px";
+        cancelBtn.style.fontWeight="bold";
+        cancelBtn.innerHTML = "取消";
+        var primaryBtn = document.createElement("button");
+        primaryBtn.type = "button";
+        primaryBtn.id = "confirm";
+        primaryBtn.innerHTML = "确定";
+        primaryBtn.style.marginLeft="40px";
+        primaryBtn.style.width="60px";
+        primaryBtn.style.height="30px";
+        primaryBtn.style.background="#4d97ff";
+        primaryBtn.style.fontWeight="bold";
+        modal_footer.appendChild(cancelBtn);
+        modal_footer.appendChild(primaryBtn);
+        inputModal.appendChild(modal_footer);
+        cancelBtn.onclick = function(){
+            document.body.removeChild(cover);
+        };
+        closeBtn.onclick = function(){
+            document.body.removeChild(cover);
+        };
+        primaryBtn.onclick = function(){
+            var text_input = input.value;
+            var errorDom = document.getElementById("tip");
+            if ((text_input < minval || text_input > maxval)){
+                if(!errorDom){
+                    var errorText = document.createElement("span");
+                    errorText.id = "tip";
+                    errorText.innerHTML = "输入的数组在"+minval+"~"+maxval+"之间";
+                    errorText.style.fontSize="14px";
+                    errorText.style.color="red";
+                    errorText.style.display = "block";
+                    errorText.style.marginTop="5px";
+                    modal_body.appendChild(errorText);
+                }
+                return;
+            } else if(text_input > minval && text_input < maxval && errorDom){
+                modal_body.removeChild(errorDom);
+            }
+            document.body.removeChild(cover);
+            resolve(text_input);
+        };
+    });
+};
+
+
 
 // Information about method names and their internal functions for
 // methods that differ (in visibility or name) between Python 2 and 3.
@@ -256,4 +463,5 @@ Sk.switch_version = function (python3) {
 
 goog.exportSymbol("Sk.python3", Sk.python3);
 goog.exportSymbol("Sk.inputfun", Sk.inputfun);
+goog.exportSymbol("Sk.turtle_textinput", Sk.turtle_textinput);
 goog.require("goog.asserts");

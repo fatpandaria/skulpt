@@ -1,8 +1,10 @@
 {
-  "name": "skulpt",
+  "name": "skulpt-codepku",
   "version": "1.0.0",
   "description": "Skulpt is a Javascript implementation of Python 2.x. Python that runs in your browser!",
-  "keywords": ["skulpt"],
+  "keywords": [
+    "skulpt"
+  ],
   "scripts": {
     "testdebug": "./skulpt.py testdebug",
     "regengooglocs": "./skulpt.py regengooglocs",
@@ -20,11 +22,11 @@
     "vfs": "./skulpt.py vfs",
     "host": "./skulpt.py host",
     "repl": "./skulpt.py repl",
-
     "build": "./skulpt.py dist",
     "build-min": "./skulpt.py dist -u",
     "test": "./skulpt.py test",
-    "test3": "./skulpt.py test3"
+    "test3": "./skulpt.py test3",
+    "prepublish": "python2.7 skulpt.py dist"
   },
   "repository": {
     "type": "git",
@@ -38,7 +40,6 @@
     "name": "Brad Miller"
   },
   "license": "MIT",
-  "private": true,
   "devDependencies": {
     "jshint": "~2.5.2",
     "jscs": "~1.12",
