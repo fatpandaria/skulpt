@@ -1573,6 +1573,36 @@ function generateTurtleModule(_target) {
         };
         proto.$ontimer.minArgs = 0;
         proto.$ontimer.co_varnames = ["method", "interval"];
+
+        /**
+         * turtle.textinput(title,prompt)
+         * title  modal title
+         * prompt content
+         * 
+        */
+        proto.$textinput = function(title, prompt){
+            return Sk.turtle_textinput(title, prompt);
+        }
+
+        /*Sk.turtle_textinput return a sk builtin type */
+        proto.$textinput.isSk = true;
+
+        /**
+         * 
+         * @param {*} title 
+         * @param {*} prompt 
+         * @param {*} defaultVal 
+         * @param {*} minval 
+         * @param {*} maxval 
+         */
+        proto.$numinput = function(title, prompt, defaultVal, minval, maxval){
+            return Sk.turtle_numinput(title, prompt, defaultVal, minval, maxval);
+        }
+
+        proto.$numinput.minArgs = 2;
+        proto.$numinput.keywordArgs = ['defaultVal', 'minval', 'maxval'];
+        proto.$numinput.isSk = true;
+
     })(Screen.prototype);
 
     function ensureAnonymous() {
@@ -2305,7 +2335,10 @@ function generateTurtleModule(_target) {
     addModuleMethod(Screen, _module, "$delay", getScreen);
     addModuleMethod(Screen, _module, "$window_width", getScreen);
     addModuleMethod(Screen, _module, "$window_height", getScreen);
+    addModuleMethod(Screen, _module, '$textinput', getScreen);
+    addModuleMethod(Screen, _module, "$numinput", getScreen);
 
+    _module.Pen = Sk.misceval.buildClass(_module, TurtleWrapper, "Pen", []);
     _module.Turtle = Sk.misceval.buildClass(_module, TurtleWrapper, "Turtle", []);
     _module.Screen = Sk.misceval.buildClass(_module, ScreenWrapper, "Screen", []);
 
@@ -2366,7 +2399,8 @@ function generateTurtleModule(_target) {
         stop     : stopTurtle,
         focus    : focusTurtle,
         Turtle   : Turtle,
-        Screen   : Screen
+        Screen   : Screen,
+        Pen: _module.Pen
     };
 }
 
@@ -2387,7 +2421,8 @@ Sk.TurtleGraphics.stop   = currentTarget.turtleInstance.stop;
 Sk.TurtleGraphics.focus  = currentTarget.turtleInstance.focus;
 Sk.TurtleGraphics.raw = {
     Turtle : currentTarget.turtleInstance.Turtle,
-    Screen : currentTarget.turtleInstance.Screen
+    Screen : currentTarget.turtleInstance.Screen,
+    Pen: currentTarget.turtleInstance.Pen
 };
 
 return currentTarget.turtleInstance.skModule;
