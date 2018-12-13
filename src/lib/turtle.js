@@ -531,10 +531,14 @@ function generateTurtleModule(_target) {
         };
 
         proto.queueMoveBy = function(startX, startY, theta, distance) {
-            var dx = Math.cos(theta) * distance,
+            if(typeof distance === 'number'){
+                var dx = Math.cos(theta) * distance,
                 dy = Math.sin(theta) * distance;
 
-            return this.translate(startX, startY, dx, dy, true);
+                return this.translate(startX, startY, dx, dy, true);
+            }else{
+                throw new Sk.builtin.TypeError("params must be integers, not " + Sk.abstr.typeName(distance));
+            }
         };
 
         proto.queueTurnTo = function(startAngle, endAngle) {
