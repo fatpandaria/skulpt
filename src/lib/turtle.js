@@ -2007,6 +2007,10 @@ function generateTurtleModule(_target) {
     function createColor(color, g, b, a) {
         var i;
 
+        if((typeof color === 'number' && color > 255) || (typeof g === 'number' && g > 255) || (typeof b === 'number' && b > 255)){
+            throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
+        }
+
         if (g !== undefined) {
             color = [color, g, b, a];
         }

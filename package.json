@@ -32,17 +32,23 @@
     "type": "git",
     "url": "git@github.com:Lincoln-xzc/skulpt.git"
   },
-  "bugs": {
-    "url": "https://github.com/skulpt/skulpt/issues"
-  },
-  "homepage": "http://www.skulpt.org/",
-  "author": {
-    "name": "lincoln-xzc"
-  },
+  "author": "Lincoln-xzc",
   "license": "MIT",
   "devDependencies": {
     "jshint": "~2.5.2",
     "jscs": "~1.12",
     "jsdoc": "~3.3.2"
-  }
+  },
+  "bugs": {
+    "url": "https://github.com/Lincoln-xzc/skulpt/issues"
+  },
+  "homepage": "https://github.com/Lincoln-xzc/skulpt#readme",
+  "main": "tmp.js",
+  "private": false,
+  "directories": {
+    "doc": "doc",
+    "example": "example",
+    "test": "test"
+  },
+  "dependencies": {}
 }
