@@ -40,6 +40,7 @@
   "author": {
     "name": "Brad Miller"
   },
+  "author": "Lincoln-xzc",
   "license": "MIT",
   "devDependencies": {
     "acorn": "^6.1.1",
