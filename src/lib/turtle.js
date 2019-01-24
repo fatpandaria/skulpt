@@ -2011,6 +2011,10 @@ function generateTurtleModule(_target) {
             color = [color, g, b, a];
         }
 
+        if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
+            throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
+        }
+
         if (color.constructor === Array && color.length) {
             for(i = 0; i < 3; i++) {
                 color[i] = (typeof color[i] === "number") ?
