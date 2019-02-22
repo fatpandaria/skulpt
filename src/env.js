@@ -272,14 +272,17 @@ Sk.turtle_textinput = function(title, prompt){
         modal_footer.appendChild(cancelBtn);
         modal_footer.appendChild(primaryBtn);
         inputModal.appendChild(modal_footer);
+        var text_input = 0;
         cancelBtn.onclick = function(){
             document.body.removeChild(cover);
+            resolve(text_input);
         };
         closeBtn.onclick = function(){
             document.body.removeChild(cover);
+            resolve(text_input);
         };
         primaryBtn.onclick = function(){
-            var text_input = input.value;
+            text_input = input.value;
             document.body.removeChild(cover);
             resolve(text_input);
         };
@@ -365,14 +368,17 @@ Sk.turtle_numinput = function(title, prompt, defaultVal, minval, maxval){
         modal_footer.appendChild(cancelBtn);
         modal_footer.appendChild(primaryBtn);
         inputModal.appendChild(modal_footer);
+        var text_input = 0;
         cancelBtn.onclick = function(){
             document.body.removeChild(cover);
+            resolve(text_input);
         };
         closeBtn.onclick = function(){
             document.body.removeChild(cover);
+            resolve(text_input);
         };
         primaryBtn.onclick = function(){
-            var text_input = input.value;
+            text_input = input.value;
             var errorDom = document.getElementById("tip");
             if ((text_input < minval || text_input > maxval)){
                 if(!errorDom){
