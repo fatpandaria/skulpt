@@ -523,18 +523,27 @@ function generateTurtleModule(_target) {
 
         proto.rotate = function(startAngle, delta, isCircle) {
             var self = this;
-            return rotate(this, startAngle, delta, isCircle)
+            if(typeof delta === 'number'){
+                return rotate(this, startAngle, delta, isCircle)
                 .then(function(heading) {
                     self._angle   = heading.angle;
                     self._radians = heading.radians;
                 });
+            }else{
+                throw new Sk.builtin.TypeError("params must be integers, not " + Sk.abstr.typeName(delta));
+            }
+            
         };
 
         proto.queueMoveBy = function(startX, startY, theta, distance) {
-            var dx = Math.cos(theta) * distance,
+            if(typeof distance === 'number'){
+                var dx = Math.cos(theta) * distance,
                 dy = Math.sin(theta) * distance;
 
-            return this.translate(startX, startY, dx, dy, true);
+                return this.translate(startX, startY, dx, dy, true);
+            }else{
+                throw new Sk.builtin.TypeError("params must be integers, not " + Sk.abstr.typeName(distance));
+            }
         };
 
         proto.queueTurnTo = function(startAngle, endAngle) {
@@ -780,14 +789,24 @@ function generateTurtleModule(_target) {
                 endAngle, frac, w, w2, l, i, dx, dy, promise;
 
             pushUndo(this);
-
+            if(typeof radius !== 'number'){
+                throw new Sk.builtin.TypeError("params must be integers, not " + Sk.abstr.typeName(radius));    
+            }
             if (extent === undefined) {
                 extent = self._fullCircle;
+            }else{
+                if(typeof extent !== 'number'){
+                    throw new Sk.builtin.TypeError("params must be integers, not " + Sk.abstr.typeName(extent));
+                }
             }
 
             if (steps === undefined) {
                 frac  = Math.abs(extent)/self._fullCircle;
                 steps = 1 + ((Math.min(11+Math.abs(radius*scale)/6, 59)*frac) | 0);
+            }else{
+                if(typeof steps !== 'number'){
+                    throw new Sk.builtin.TypeError("params must be integers, not " + Sk.abstr.typeName(steps));
+                }
             }
             w  = extent / steps;
             w2 = 0.5 * w;
@@ -1044,6 +1063,10 @@ function generateTurtleModule(_target) {
             if (shape && SHAPES[shape]) {
                 this._shape = shape;
                 return this.addUpdate(undefined, this._shown, {shape : shape});
+            }else{
+                if(shape && !SHAPES[shape]){
+                    throw new Sk.builtin.TypeError("shape name options: arrow, turtle, circle, square, triangle, classic ," + Sk.abstr.typeName(shape));
+                }
             }
 
             return this._shape;
@@ -1573,6 +1596,36 @@ function generateTurtleModule(_target) {
         };
         proto.$ontimer.minArgs = 0;
         proto.$ontimer.co_varnames = ["method", "interval"];
+
+        /**
+         * turtle.textinput(title,prompt)
+         * title  modal title
+         * prompt content
+         * 
+        */
+        proto.$textinput = function(title, prompt){
+            return Sk.turtle_textinput(title, prompt);
+        }
+
+        /*Sk.turtle_textinput return a sk builtin type */
+        proto.$textinput.isSk = true;
+
+        /**
+         * 
+         * @param {*} title 
+         * @param {*} prompt 
+         * @param {*} defaultVal 
+         * @param {*} minval 
+         * @param {*} maxval 
+         */
+        proto.$numinput = function(title, prompt, defaultVal, minval, maxval){
+            return Sk.turtle_numinput(title, prompt, defaultVal, minval, maxval);
+        }
+
+        proto.$numinput.minArgs = 2;
+        proto.$numinput.keywordArgs = ['defaultVal', 'minval', 'maxval'];
+        proto.$numinput.isSk = true;
+
     })(Screen.prototype);
 
     function ensureAnonymous() {
@@ -2046,9 +2099,16 @@ function generateTurtleModule(_target) {
 
     function createColor(turtleColorMode,color, g, b, a) {
         var i;
+        if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
+            throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
+        }
 
         if (g !== undefined) {
             color = [color, g, b, a];
+        }
+
+        if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
+            throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
         }
 
         if (color.constructor === Array && color.length) {
@@ -2305,7 +2365,10 @@ function generateTurtleModule(_target) {
     addModuleMethod(Screen, _module, "$delay", getScreen);
     addModuleMethod(Screen, _module, "$window_width", getScreen);
     addModuleMethod(Screen, _module, "$window_height", getScreen);
+    addModuleMethod(Screen, _module, '$textinput', getScreen);
+    addModuleMethod(Screen, _module, "$numinput", getScreen);
 
+    _module.Pen = Sk.misceval.buildClass(_module, TurtleWrapper, "Pen", []);
     _module.Turtle = Sk.misceval.buildClass(_module, TurtleWrapper, "Turtle", []);
     _module.Screen = Sk.misceval.buildClass(_module, ScreenWrapper, "Screen", []);
 
@@ -2366,7 +2429,8 @@ function generateTurtleModule(_target) {
         stop     : stopTurtle,
         focus    : focusTurtle,
         Turtle   : Turtle,
-        Screen   : Screen
+        Screen   : Screen,
+        Pen: _module.Pen
     };
 }
 
@@ -2387,7 +2451,8 @@ Sk.TurtleGraphics.stop   = currentTarget.turtleInstance.stop;
 Sk.TurtleGraphics.focus  = currentTarget.turtleInstance.focus;
 Sk.TurtleGraphics.raw = {
     Turtle : currentTarget.turtleInstance.Turtle,
-    Screen : currentTarget.turtleInstance.Screen
+    Screen : currentTarget.turtleInstance.Screen,
+    Pen: currentTarget.turtleInstance.Pen
 };
 
 return currentTarget.turtleInstance.skModule;

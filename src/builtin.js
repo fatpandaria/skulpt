@@ -6,6 +6,10 @@
  */
 
 Sk.builtin.range = function range (start, stop, step) {
+    this.start = start;
+    this.stop = stop;
+    this.step = step;
+
     var ret = [];
     var i;
 
@@ -43,8 +47,7 @@ Sk.builtin.range = function range (start, stop, step) {
             ret.push(new Sk.builtin.int_(i));
         }
     }
-
-    return new Sk.builtin.list(ret);
+    return new Sk.builtin.list(ret); 
 };
 
 Sk.builtin.asnum$ = function (a) {
