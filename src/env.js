@@ -139,7 +139,7 @@ Sk.configure = function (options) {
 
     //add turtle_input
     Sk.turtle_textinput = options["turtle_textinput"] || Sk.turtle_textinput;
-    goog.asserts.assert(typeof Sk.turtle_textinput === "function");
+    Sk.asserts.assert(typeof Sk.turtle_textinput === "function");
 
     Sk.retainGlobals = options["retainglobals"] || false;
     Sk.asserts.assert(typeof Sk.retainGlobals === "boolean");
