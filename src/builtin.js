@@ -6,9 +6,9 @@
  */
 
 Sk.builtin.range = function range (start, stop, step) {
-    this.start = start;
-    this.stop = stop;
-    this.step = step;
+    // this.start = start;
+    // this.stop = stop;
+    // this.step = step;
 
     var ret = [];
     var i;
