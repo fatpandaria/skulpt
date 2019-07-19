@@ -233,9 +233,6 @@ Sk.builtin.file.prototype["truncate"] = new Sk.builtin.func(function truncate(se
 
 Sk.builtin.file.prototype["write"] = new Sk.builtin.func(function write(self, str) {
     var mode = Sk.ffi.remapToJs(self.mode);
-    if(Sk.cusfilewrite){
-        return Sk.cusfilewrite(self,str,mode); //use custom file write to deal with file write FIXME:should be removed once official implement file write
-    }	
     if (mode === "w" || mode === "wb" || mode === "a" || mode === "ab") {
         if (Sk.filewrite) {
             if (self.closed) {

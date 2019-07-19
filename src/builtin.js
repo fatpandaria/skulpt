@@ -718,7 +718,7 @@ Sk.builtin.open = function open () {
     let args, kwargs;
     Sk.builtin.pyCheckArgsLen("open", arguments.length, 1, 4); // used to be 3 max
     // let allModes = ["w", "r", "a", "wb", "ab", "t", "x", "b", "+", "U", "rb", "r+", "rb+", "w+", "wb+", "a+", "ab+"];
-    if(arguments.length > 1 && arguments[0].length > 0){ // which means there is kwarg pushed
+    if(Array.isArray(arguments[0]) && arguments[0].length > 0){ // which means there is kwarg pushed
         args = Array.prototype.slice.call(arguments, 1) || [];
         kwargs = arguments[0];
     } else {
@@ -738,35 +738,6 @@ Sk.builtin.open = function open () {
             }
         }
     }
-    // while(i < args.length){
-    //     let item = args[i];
-    //     i++;
-    //     if(Array.isArray(item) && item.length > 1){ // means it is key word arg
-    //         if(item[0].v !=="encoding"){
-    //             throw "key word" + item[0].v + "not implemented";
-    //         } else if (item[1].v !== "utf8"){
-    //             throw "encoding only supports utf8 now";
-    //         }
-    //     } else if(item instanceof Sk.builtin.str) {
-    //         if(item.v && item.v.indexOf(".txt") > -1){
-    //             if(!filename) {
-    //                 filename = item;
-    //             } else {
-    //                 throw "duplicated filename input" + item[0].v;
-    //             }
-    //         }
-    //         if(allModes.indexOf(item.v) > -1){
-    //             if(!mode) {
-    //                 mode = item;
-    //             } else {
-    //                 throw "duplicated mode" + item.v;
-    //             }
-    //         } else if(!Number.isNaN(Number(item.v))){
-    //             bufsize = item;
-    //         }
-    //     }
-    // }
-
     if(!mode) {
         mode = new Sk.builtin.str("r");
     }
