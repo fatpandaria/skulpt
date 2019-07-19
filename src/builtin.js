@@ -718,12 +718,11 @@ Sk.builtin.open = function open () {
     let args, kwargs;
     Sk.builtin.pyCheckArgsLen("open", arguments.length, 1, 4); // used to be 3 max
     // let allModes = ["w", "r", "a", "wb", "ab", "t", "x", "b", "+", "U", "rb", "r+", "rb+", "w+", "wb+", "a+", "ab+"];
-    if(Array.isArray(arguments[0]) && arguments[0].length > 0){ // which means there is kwarg pushed
-        args = Array.prototype.slice.call(arguments, 1) || [];
+    if(arguments[0].length > 0){ // which means there is kwarg pushed
         kwargs = arguments[0];
-    } else {
-        args = Array.prototype.slice.call(arguments, 0) || [];
     }
+    args = Array.prototype.slice.call(arguments, 1) || [];
+
     let [filename, mode, bufsize] = args;
     if(kwargs && Array.isArray(kwargs)){
         for(let i = 0 ; i < kwargs.length ; i++){
