@@ -6,10 +6,6 @@
  */
 
 Sk.builtin.range = function range (start, stop, step) {
-    // this.start = start;
-    // this.stop = stop;
-    // this.step = step;
-
     var ret = [];
     var i;
 
@@ -713,20 +709,77 @@ Sk.builtin.repr = function repr (x) {
     return Sk.misceval.objectRepr(x);
 };
 
-Sk.builtin.open = function open (filename, mode, bufsize) {
-    Sk.builtin.pyCheckArgsLen("open", arguments.length, 1, 3);
-    if (mode === undefined) {
+Sk.builtin.open = function open () {
+    //file,mode,buffering, process arguments by myself
+    // add support for encoding ,onlye utf8 is supported;
+    // when keyword params pushed ,the order will change;
+    // filname only support .txt
+    //
+    let args, kwargs;
+    Sk.builtin.pyCheckArgsLen("open", arguments.length, 1, 4); // used to be 3 max
+
+    let filename, mode, bufsize, i=0;
+    let allModes = ["w", "r", "a", "wb", "ab", "t", "x", "b", "+", "U", "rb", "r+", "rb+", "w+", "wb+", "a+", "ab+"];
+    if(arguments[0].length > 1){ // which means there is kwarg pushed
+        args = Array.prototype.slice.call(arguments, 1);
+        kwargs = arguments[0];
+    } else {
+        args = Array.prototype.slice.call(arguments, 0);
+    }
+    let [filename, mode, bufsize] = args;
+    if(kwargs && Array.isArray(kwargs)){
+        for(let i = 0 ; i < kwargs.length ; i++){
+            if(kwargs[i].v === "encoding" && kwargs[i+1] && kwargs[i+1].v !== "utf8"){
+                throw "illegal encoding argument, only utf8 supported";
+            } else if(kwargs[i].v === "buffering" && kwargs[i+1] && Number.isNaN(Number(kwargs[i+1].v))){
+                if(!bufsize) {
+                    bufsize = kwargs[i + 1];
+                } else {
+                    throw 'ilegal buffer argument';
+                }
+            }
+        }
+    }
+    // while(i < args.length){
+    //     let item = args[i];
+    //     i++;
+    //     if(Array.isArray(item) && item.length > 1){ // means it is key word arg
+    //         if(item[0].v !=="encoding"){
+    //             throw "key word" + item[0].v + "not implemented";
+    //         } else if (item[1].v !== "utf8"){
+    //             throw "encoding only supports utf8 now";
+    //         }
+    //     } else if(item instanceof Sk.builtin.str) {
+    //         if(item.v && item.v.indexOf(".txt") > -1){
+    //             if(!filename) {
+    //                 filename = item;
+    //             } else {
+    //                 throw "duplicated filename input" + item[0].v;
+    //             }
+    //         }
+    //         if(allModes.indexOf(item.v) > -1){
+    //             if(!mode) {
+    //                 mode = item;
+    //             } else {
+    //                 throw "duplicated mode" + item.v;
+    //             }
+    //         } else if(!Number.isNaN(Number(item.v))){
+    //             bufsize = item;
+    //         }
+    //     }
+    // }
+
+    if(!mode) {
         mode = new Sk.builtin.str("r");
     }
-
     if (/\+/.test(mode.v)) {
         throw "todo; haven't implemented read/write mode";
-    } else if ((mode.v === "w" || mode.v === "wb" || mode.v === "a" || mode.v === "ab") && !Sk.nonreadopen) {
-        throw "todo; haven't implemented non-read opens";
+    } else if (( mode.v === "wb" || mode.v === "ab") && !Sk.nonreadopen) {
+        throw "todo; haven't implemented binary non-read opens";
     }
-
     return new Sk.builtin.file(filename, mode, bufsize);
 };
+Sk.builtin.open["co_kwargs"] = true; // to use args like encoding='utf8';
 
 Sk.builtin.isinstance = function isinstance (obj, type) {
     var issubclass;

@@ -83,6 +83,9 @@ Sk.configure = function (options) {
     Sk.debugout = options["debugout"] || Sk.debugout;
     Sk.asserts.assert(typeof Sk.debugout === "function");
 
+    Sk.cusfilewrite = options["cusfilewrite"] || undefined;
+    Sk.asserts.assert(typeof Sk.cusfilewrite === "function" || typeof Sk.cusfilewrite === "undefined");
+
     Sk.uncaughtException = options["uncaughtException"] || Sk.uncaughtException;
     Sk.asserts.assert(typeof Sk.uncaughtException === "function");
 
