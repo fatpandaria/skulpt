@@ -733,7 +733,7 @@ Sk.builtin.open = function open () {
                 if(!bufsize) {
                     bufsize = kwargs[i + 1];
                 } else {
-                    throw 'ilegal buffer argument';
+                    throw "ilegal buffer argument";
                 }
             }
         }
