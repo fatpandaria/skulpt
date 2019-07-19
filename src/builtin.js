@@ -718,7 +718,7 @@ Sk.builtin.open = function open () {
     let args, kwargs;
     Sk.builtin.pyCheckArgsLen("open", arguments.length, 1, 4); // used to be 3 max
     // let allModes = ["w", "r", "a", "wb", "ab", "t", "x", "b", "+", "U", "rb", "r+", "rb+", "w+", "wb+", "a+", "ab+"];
-    if(arguments[0].length > 1){ // which means there is kwarg pushed
+    if(arguments.length > 1 && arguments[0].length > 0){ // which means there is kwarg pushed
         args = Array.prototype.slice.call(arguments, 1) || [];
         kwargs = arguments[0];
     } else {
