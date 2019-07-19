@@ -746,6 +746,7 @@ Sk.builtin.open = function open () {
     } else if (( mode.v === "wb" || mode.v === "ab") && !Sk.nonreadopen) {
         throw "todo; haven't implemented binary non-read opens";
     }
+    console.log(filename, mode, bufsize);
     return new Sk.builtin.file(filename, mode, bufsize);
 };
 Sk.builtin.open["co_kwargs"] = true; // to use args like encoding='utf8';
