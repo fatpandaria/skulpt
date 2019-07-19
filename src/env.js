@@ -214,6 +214,9 @@ Sk.configure = function (options) {
     Sk.switch_version("clear$", Sk.__future__.list_clear);
 
     Sk.builtin.lng.tp$name = Sk.__future__.no_long_type ? "int" : "long";
+
+    Sk.setupOperators(Sk.__future__.python3);
+    Sk.setupDunderMethods(Sk.__future__.python3);
 };
 
 Sk.exportSymbol("Sk.configure", Sk.configure);
@@ -599,3 +602,4 @@ Sk.exportSymbol("Sk.turtle_textinput", Sk.turtle_textinput);
 
 Sk.exportSymbol("Sk.__future__", Sk.__future__);
 Sk.exportSymbol("Sk.inputfun", Sk.inputfun);
+
