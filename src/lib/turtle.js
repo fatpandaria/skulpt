@@ -580,7 +580,7 @@ function generateTurtleModule(_target) {
             this._undoBuffer = [];
             this._speed      = 3;
             this._computed_speed = 5;
-            this._colorMode  = 1.0;
+            this._colorMode  = 255;  // default to 255,official is 1.0
             this._state      = undefined;
 
             for(var key in this._managers) {
@@ -2100,17 +2100,17 @@ function generateTurtleModule(_target) {
     function createColor(turtleColorMode,color, g, b, a) {
         console.log(turtleColorMode, color, g, b, a);
         var i;
-        if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
-            throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
-        }
+        // if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
+        //     throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
+        // }
 
         if (g !== undefined) {
             color = [color, g, b, a];
         }
 
-        if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
-            throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
-        }
+        // if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
+        //     throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
+        // }
 
         if (color.constructor === Array && color.length) {
             if(turtleColorMode === 255){//mode is 255
