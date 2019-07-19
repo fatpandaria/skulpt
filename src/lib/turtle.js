@@ -2098,6 +2098,7 @@ function generateTurtleModule(_target) {
     }
 
     function createColor(turtleColorMode,color, g, b, a) {
+        console.log(turtleColorMode, color, g, b, a);
         var i;
         if((typeof color === 'number' && (color > 255 || color < 0) ) || (typeof g === 'number' && (g > 255 || g < 0)) || (typeof b === 'number' && (b > 255 || b < 0))){
             throw new Sk.builtin.TypeError("rgb 的数值范围在0~255之间");
