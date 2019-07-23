@@ -54,7 +54,7 @@ Sk.builtin.file = function (name, mode, buffering) {
         this.currentLine = 0;
     }
     this.pos$ = 0;
-
+    console.log(this.lineList);
     this.__class__ = Sk.builtin.file;
 
     if (Sk.fileopen && this.fileno >= 10) {
