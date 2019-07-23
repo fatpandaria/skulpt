@@ -46,10 +46,13 @@ Sk.builtin.file = function (name, mode, buffering) {
         }
 
         this.lineList = this.data$.split("\n");
-        this.lineList = this.lineList.slice(0, -1);
+        // this.lineList = this.lineList.slice(0, -1);
 
-        for (i in this.lineList) {
-            this.lineList[i] = this.lineList[i] + "\n";
+        
+        if(this.lineList.length > 1){ // if length == 1 should not add newline 
+            for (i in this.lineList) {
+                this.lineList[i] = this.lineList[i] + "\n";
+            }
         }
         this.currentLine = 0;
     }
